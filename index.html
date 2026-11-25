@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok Smart Growth</title>
+<style>
+:root{--bg:#101114;--panel:#1b1c22;--panel2:#25262e;--text:#f5f5f7;--muted:#a5a6b0;--pink:#fe2c55;--cyan:#25f4ee;--border:#363740}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.logo{font-weight:800;font-size:22px}.logo span{color:var(--pink)}
+button{background:var(--pink);color:white;border:0;border-radius:8px;padding:11px 15px;font-weight:bold;cursor:pointer}
+button.secondary{background:var(--panel2);border:1px solid var(--border)}
+.layout{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 70px)}
+nav{padding:18px;border-right:1px solid var(--border)}nav button{display:block;width:100%;text-align:left;margin:0 0 8px;background:transparent;color:var(--muted)}nav button.active,nav button:hover{background:var(--panel2);color:white}
+main{padding:24px;max-width:1300px;width:100%;margin:auto}.section{display:none}.section.active{display:block}
+h1{margin-top:0}h2{font-size:19px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:18px;margin-bottom:16px}
+.metric{font-size:28px;font-weight:bold;margin:12px 0}.cyan{color:var(--cyan)}.pink{color:var(--pink)}
+input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;background:var(--bg);color:white;border:1px solid var(--border);border-radius:8px;font:inherit}
+textarea{min-height:95px;resize:vertical}label{color:var(--muted);font-size:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.result{white-space:pre-wrap;line-height:1.6;background:var(--panel2);padding:14px;border-radius:8px;margin-top:14px}
+.warning{background:#3a2c20;border:1px solid #71512e;padding:14px;border-radius:9px;color:#f5d4a3;margin:18px 0}
+.list-item{padding:12px 0;border-bottom:1px solid var(--border)}.list-item:last-child{border:0}
+footer{text-align:center;padding:22px;color:var(--muted);font-size:13px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}nav{display:flex;overflow:auto;gap:7px;border-right:0;border-bottom:1px solid var(--border);padding:10px}nav button{width:auto;white-space:nowrap;margin:0}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:15px}}
+@media(max-width:480px){.grid,.form-grid{grid-template-columns:1fr}.metric{font-size:25px}}
+</style>
+</head>
+<body>
+<header><div class="logo">TikTok <span>Smart Growth</span></div><button onclick="show('planner')">＋ Create Content</button></header>
+<div class="layout">
+<nav>
+<button class="active" data-page="dashboard" onclick="show('dashboard',this)">Dashboard</button>
+<button data-page="planner" onclick="show('planner',this)">Content Planner</button>
+<button data-page="strategy" onclick="show('strategy',this)">Growth Strategy</button>
+<button data-page="schedule" onclick="show('schedule',this)">Posting Schedule</button>
+<button data-page="security" onclick="show('security',this)">Account Security</button>
+</nav>
+<main>
+<section id="dashboard" class="section active">
+<h1>Growth Dashboard</h1><p class="muted">Track performance and plan content for genuine audience growth.</p>
+<div class="warning"><b>Demo mode:</b> Statistics are examples. This page is not connected to TikTok.</div>
+<div class="grid">
+<div class="card"><div class="muted">Followers</div><div class="metric" id="followers">1,250</div><span class="cyan">Audience</span></div>
+<div class="card"><div class="muted">Likes</div><div class="metric" id="likes">8,420</div><span class="pink">Engagement</span></div>
+<div class="card"><div class="muted">Video views</div><div class="metric" id="views">24,600</div><span class="cyan">Reach</span></div>
+<div class="card"><div class="muted">Videos</div><div class="metric" id="videos">18</div><span class="pink">Published</span></div>
+</div>
+<div class="card"><h2>Update Statistics</h2><div class="form-grid">
+<div><label>Followers</label><input type="number" min="0" id="newFollowers"></div>
+<div><label>Likes</label><input type="number" min="0" id="newLikes"></div>
+<div><label>Views</label><input type="number" min="0" id="newViews"></div>
+<div><label>Videos</label><input type="number" min="0" id="newVideos"></div></div><button onclick="updateStats()">Update</button></div>
+<div class="card"><h2>Growth tips</h2><p>Start with a clear hook, deliver useful or entertaining content, post consistently, and review which videos retain viewers. Reply to genuine comments and test one change at a time.</p></div>
+</section>
+<section id="planner" class="section">
+<h1>Content Planner</h1><div class="card">
+<label>Video topic</label><input id="topic" placeholder="e.g. How to care for cattle">
+<label>Niche</label><select id="niche"><option>Education</option><option>Animal Health</option><option>Farming</option><option>Entertainment</option><option>Business</option><option>Technology</option><option>Other</option></select>
+<label>Style</label><select id="style"><option>Educational</option><option>Funny</option><option>Storytelling</option><option>Demonstration</option><option>Motivational</option></select>
+<button onclick="generateContent()">Generate plan</button><div id="contentResult" class="result" hidden></div>
+</div>
+<div class="card"><h2>Save an idea</h2><label>Title</label><input id="ideaTitle"><label>Notes</label><textarea id="ideaNotes"></textarea><button onclick="saveIdea()">Save idea</button><div id="ideasList"></div></div>
+</section>
+<section id="strategy" class="section">
+<h1>Growth Strategy</h1><div class="card"><label>Current followers</label><input type="number" min="0" id="currentFollowers"><label>Target followers</label><input type="number" min="1" id="targetFollowers"><label>Time period</label><select id="period"><option value="30">30 days</option><option value="60">60 days</option><option value="90">90 days</option></select><button onclick="generateStrategy()">Create plan</button><div id="strategyResult" class="result" hidden></div></div>
+<div class="card"><h2>Recommended actions</h2><p>Improve content quality, interact with your audience, experiment with formats, and use your analytics to guide decisions. Growth targets are not guarantees.</p></div>
+</section>
+<section id="schedule" class="section">
+<h1>Posting Schedule</h1><div class="card"><label>Video title</label><input id="scheduleTitle"><div class="form-grid"><div><label>Date</label><input type="date" id="scheduleDate"></div><div><label>Time</label><input type="time" id="scheduleTime"></div></div><button onclick="addSchedule()">Add to schedule</button><div id="scheduleList"></div></div>
+</section>
+<section id="security" class="section">
+<h1>Account Security</h1><div class="warning">Never give your TikTok password or verification codes to a third-party growth tool. Avoid services promising guaranteed likes or followers.</div>
+<div class="card"><h2>Security checklist</h2>
+<label class="list-item"><input type="checkbox"> Enable TikTok two-step verification</label>
+<label class="list-item"><input type="checkbox"> Use a unique password</label>
+<label class="list-item"><input type="checkbox"> Review logged-in devices regularly</label>
+<label class="list-item"><input type="checkbox"> Use authorized TikTok integrations only</label>
+<label class="list-item"><input type="checkbox"> Keep recovery email and phone updated</label>
+</div>
+<div class="card"><h2>Reliability</h2><p>This is a local browser prototype. Cloud hosting, monitoring, backups, and a secure backend would be needed for continuous operation. No system can promise zero downtime or perfect security.</p></div>
+</section>
+</main></div><footer>Independent TikTok planning dashboard · Not affiliated with TikTok</footer>
+<script>
+function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));const b=btn||document.querySelector('nav button[data-page="'+id+'"]');if(b)b.classList.add('active')}
+function updateStats(){[['newFollowers','followers'],['newLikes','likes'],['newViews','views'],['newVideos','videos']].forEach(([a,b])=>{let v=document.getElementById(a).value;if(v!==''&&Number(v)>=0)document.getElementById(b).textContent=Number(v).toLocaleString()})}
+function generateContent(){let t=document.getElementById('topic').value.trim();if(!t)return alert('Enter a video topic.');let n=document.getElementById('niche').value,s=document.getElementById('style').value;let out=`TOPIC: ${t}\nNICHE: ${n}\nSTYLE: ${s}\n\nVIDEO STRUCTURE\n1. Open with an interesting question or statement.\n2. Explain the topic clearly.\n3. Share three useful points or demonstrate a process.\n4. End with a genuine question for viewers.\n\nCAPTION: Learn more about ${t}!\nHASHTAGS: #${n.replace(/\s/g,'')} #LearnOnTikTok\n\nTIP: Keep it accurate, clear, and engaging.`;let el=document.getElementById('contentResult');el.textContent=out;el.hidden=false}
+function saveIdea(){let title=document.getElementById('ideaTitle').value.trim(),notes=document.getElementById('ideaNotes').value.trim();if(!title)return alert('Enter a title.');let d=document.createElement('div');d.className='list-item';let b=document.createElement('b');b.textContent=title;let p=document.createElement('p');p.textContent=notes;d.append(b,p);document.getElementById('ideasList').append(d);document.getElementById('ideaTitle').value='';document.getElementById('ideaNotes').value=''}
+function generateStrategy(){let c=Number(document.getElementById('currentFollowers').value),t=Number(document.getElementById('targetFollowers').value),days=Number(document.getElementById('period').value);if(!Number.isFinite(c)||c<0||!Number.isFinite(t)||t<=c)return alert('Enter a target higher than your current followers.');let r=Math.ceil((t-c)/days);let el=document.getElementById('strategyResult');el.textContent=`Current followers: ${c.toLocaleString()}\nTarget: ${t.toLocaleString()}\nPeriod: ${days} days\nAdditional followers needed: ${(t-c).toLocaleString()}\nAverage daily target: ${r.toLocaleString()}\n\nThis is a planning estimate, not a guarantee. Publish useful content consistently, review performance weekly, and adjust based on real results.`;el.hidden=false}
+function addSchedule(){let title=document.getElementById('scheduleTitle').value.trim(),date=document.getElementById('scheduleDate').value,time=document.getElementById('scheduleTime').value;if(!title||!date||!time)return alert('Enter a title, date, and time.');let d=document.createElement('div');d.className='list-item';let b=document.createElement('b');b.textContent=title;let p=document.createElement('p');p.textContent=date+' at '+time;d.append(b,p);document.getElementById('scheduleList').append(d);document.getElementById('scheduleTitle').value=''}
+</script>
+</body></html>
